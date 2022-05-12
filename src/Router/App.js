@@ -5,7 +5,7 @@ import CollectionPage from '../modules/Collection';
 import NotFound from '../modules/ErrorPages';
 
 import { Provider } from 'react-redux'
-import { Route, BrowserRouter as Router, Switch, NavLink  } from 'react-router-dom'
+import { Route, HashRouter as Router, Switch, NavLink  } from 'react-router-dom'
 import { store } from '../store';
 import HomeComponent from '../modules/HomeComponent'
 import FilterCollectionComponent from '../modules/FilterCollectionComponent/FilterCollectionComponent'
