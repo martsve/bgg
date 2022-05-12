@@ -6,11 +6,13 @@ var bgg_config = {
   baseUrl: "https://boardgamegeek.com/xmlapi2/"
 };
 
+var DELAY = 350;
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-const fetchUntil = (url, retries = 5, delay = 350, mult = 2.5) => {
+const fetchUntil = (url, retries = 5, mult = 2.5) => {
   return new Promise(async (resolve, reject) => {
     for (var retryN = 0; retryN < retries; retryN++) {
       try {
@@ -20,12 +22,14 @@ const fetchUntil = (url, retries = 5, delay = 350, mult = 2.5) => {
           return;
         }
         else {
-          await sleep(delay * Math.pow(mult, retryN));
+          DELAY += 25;
+          await sleep(DELAY * Math.pow(mult, retryN));
           continue;
         }
       }
       catch {
-        await sleep(delay * Math.pow(mult, retryN));
+        DELAY += 25;
+        await sleep(DELAY * Math.pow(mult, retryN));
         continue;
       }
     }
