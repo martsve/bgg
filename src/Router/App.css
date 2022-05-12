@@ -1,0 +1,241 @@
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: stretch;
+}
+
+nav {
+  background: #eee;
+  border-bottom: 1px solid #ccc;
+}
+
+nav a {
+  display: inline-block;
+  padding: 1rem;
+  border-right: 1px solid #ccc;
+}
+
+nav a.active {
+  background: #eef;
+}
+
+nav a:hover {
+  background: #ddd !important;
+}
+
+section {
+  margin-bottom: 2rem;
+}
+section:last-child {
+  margin-bottom: unset;
+}
+
+.Body {
+  flex: 1 1 auto;
+  display: flex;
+}
+
+.SideBar {
+  flex: 0 0 auto;
+  width: 20%;
+  min-width: 150px;
+  background: #eee;
+  border-right: 1px solid #ccc;
+}
+
+.SideBar ul, .SideBar .li {
+  padding: 0px;
+  margin: 0px;
+  list-style: none;
+}
+
+.SideBar a {
+  display: block;
+  padding: 1rem;
+}
+
+.SideBar a.active {
+  background: #eef;
+}
+
+.SideBar a:hover {
+  background: #ddd !important;
+}
+
+.Main {
+  flex: 1 0 auto;
+  padding: 1rem;
+  width: 100%;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  margin: 0;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.col {
+  display: block;
+}
+
+.buttons button {
+  margin-right: 1rem;
+  margin-top: 1rem;
+}
+
+.error {
+  color: red;
+}
+
+.tiles {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  margin: -5px;
+}
+
+.tile {
+  width: 150px;
+  height: 150px;
+
+  padding: 1rem; 
+  background: #eef;
+  border: 1px solid #ccc;
+  margin: 5px;
+
+  flex: 0 0 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-decoration: none;
+}
+.tile span {
+  flex: 1 0 auto;
+  text-align: center;
+  vertical-align: middle;
+}
+
+@media (max-width: 700px) {
+  .col {
+    flex: 0 0 100%;
+  }
+  .sm-block {
+    display: block !important;
+  }
+  .sm-flex {
+    display: flex;
+  }
+  .sm-flex > * {
+    flex: 1 0 auto;
+  }
+}
+
+@media (min-width: 701px) {
+  .col {
+    flex: 1 0 auto;
+  }
+}
+
+.active {
+  background-color: lightblue;
+}
+
+.filterlists {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.filterlists .card {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 5px;
+  border: 1px solid gray;
+  min-width: 200px;
+}
+
+.filterlists .card ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.filterlists .card ul button {
+  display: inline-block;
+  width: 200px;
+  padding: 15px 0px;
+  margin-bottom: 5px;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.userlist  button {
+  padding: 15px;
+  margin-right: 5px;
+  min-width: 200px;
+}
+
+.gamelist ul {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.gamelist li {
+  width: 300px;
+  min-height: 200px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 5px;
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+
+.gamecard .thumbnail {
+  background-color: black;
+  text-align: center;
+}
+
+.gamecard .heading {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.selected {
+  background-color: lightgreen;
+}
+
+.disselected {
+  background-color: lightcoral;
+}
+
+.sortbar {
+  margin-bottom: 10px;
+}
