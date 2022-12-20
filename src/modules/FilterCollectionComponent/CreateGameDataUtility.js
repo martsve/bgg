@@ -14,6 +14,19 @@ export const CreateCollectionFromUserDetails = async (dbKeys, save) => {
   save(allGames);
 }
 
+const approxRank = (rating) => {
+  if (rating > 8.5) return 3;
+  if (rating > 8) return 15;
+  if (rating > 7.5) return 75;
+  if (rating > 7) return 200;
+  if (rating > 6) return 500;
+  if (rating > 5) return 1000;
+  if (rating > 4) return 5000;
+  if (rating > 3) return 10000;
+  if (rating > 2) return 15000;
+  return 100000;
+}
+
 export const CreateGameDataFromBggData = (data) => {
   let id = data['@id'];
 
@@ -26,7 +39,7 @@ export const CreateGameDataFromBggData = (data) => {
 
   let image = data.thumbnail;
   let year = parseInt(data.yearpublished["@value"], 10);
-  let rating = parseFloat(data.stats.rating["@value"])
+  let rating = parseFloat(data.stats.rating["@value"]);
   let playtime = parseInt(data.playingtime["@value"], 10);
   let minage = parseInt(data.minage["@value"], 10);
   let minplayers = parseInt(data.minplayers["@value"], 10);
@@ -40,10 +53,10 @@ export const CreateGameDataFromBggData = (data) => {
   }
 
   let rank = data.stats.rating.ranks.rank.filter(x => x["@id"] === "1")[0];
-  let bggrating = null;
+  let bggrating = parseFloat(data.stats.rating.average["@value"]);
   if (rank) {
-    bggrating = parseFloat(rank["@bayesaverage"]);
-    rank = parseFloat(rank["@value"]) || null;
+    bggrating = parseFloat(rank["@bayesaverage"]) || bggrating;
+    rank = parseFloat(rank["@value"]) || approxRank(bggrating);
   }
 
   let suggestedPlayers = { best: [], recommended: [], avoid: [] };
@@ -89,5 +102,6 @@ export const CreateGameDataFromBggData = (data) => {
     plays,
     language
   };
+
   return gamedata;
 };
