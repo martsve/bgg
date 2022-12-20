@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { FilterCollectionWidget, applyFilters } from './FilterCollectionWidget';
+import { FilterCollectionWidget, applyFilters, getDefaultFilters } from './FilterCollectionWidget';
 import { CreateCollectionFromUserDetails } from './CreateGameDataUtility';
 import { GameDataCard } from './GameDataCard';
 
@@ -10,7 +10,6 @@ const AddUsersComponent = ({ activeClass, action, name }) => {
 
 const GamesComponent = ({ list, sort }) => {
   if (!list) return (<></>);
-  console.log(sort);
   sort = sort || "rank,asc";
   let sortBy = sort.split(',')[0];
   let desc = sort.split(',')[1] === "desc";
@@ -33,7 +32,7 @@ const FilterCollectionComponent = ({ users, active, history, dispatch, location,
     history.replace('/collection');
   }
 
-  var filterList = (location.search && location.search.replace('?', '').split('&').map(x => x.split('=')).map(x => ({ key: x[0], value: decodeURIComponent(x[1]).split(',') }))) || [];
+  var filterList = (location.search && location.search.replace('?', '').split('&').map(x => x.split('=')).map(x => ({ key: x[0], value: decodeURIComponent(x[1]).split(',') }))) || getDefaultFilters();
   // eslint-disable-next-line
   var filters = filterList.reduce((a, b) => (a[b.key] = b.value, a), {});
 
@@ -63,7 +62,6 @@ const FilterCollectionComponent = ({ users, active, history, dispatch, location,
 
   let filteredCollection = applyFilters(collection, filters);
 
-  console.log(filteredCollection[0]);
   return (
     <div className="Main">
       <h2>Change Collection</h2>

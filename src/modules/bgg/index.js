@@ -37,7 +37,7 @@ const fetchUntil = (url, retries = 5, mult = 2.5) => {
   });
 }
 
-const bgg = async (path, queryParams) => {
+const bgg = async (path, queryParams, refresh = false) => {
   let url = bgg_config.baseUrl + path;
   if (queryParams) {
     var qs = Object.entries(queryParams).map( ([key, value]) => key + "=" + value);
@@ -49,7 +49,7 @@ const bgg = async (path, queryParams) => {
   }
 
   let cache = await db.get(db.CACHE, bgg_config.cachePrefix + url);
-  if (cache) {
+  if (cache && !refresh) {
     return Promise.resolve({ 
       data: JSON.parse(cache),
       cache: true

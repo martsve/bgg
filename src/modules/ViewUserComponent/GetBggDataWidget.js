@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import bgg from '../bgg';
 import db from '../utilities/db'
+import { useDispatch } from "react-redux";
 
 const DELAY = 400;
 
@@ -31,6 +32,8 @@ const GetBggDataWidget = ({ name, save, history }) => {
   const [details, setDetails] = useState({});
   const [images, setImages] = useState({});
 
+  const dispatch = useDispatch();
+  
   useEffect(() => {
     setData(null);
     setDetails({});
@@ -84,6 +87,24 @@ const GetBggDataWidget = ({ name, save, history }) => {
     })
       .then(function (x) {
         setData(x.data);
+      });
+  };
+
+  let refreshUser = () => {
+    bgg('collection', {
+      username: name,
+      subtype: "boardgame",
+      excludesubtype: "boardgameexpansion",
+      stats: 1,
+      own: 1
+    }, true)
+      .then(function (x) {
+        setData(null);
+        setDetails({});
+        setImages({});
+
+        dispatch({ type: "SET_ACTIVE", value: [] });
+        setData(x.data);        
       });
   };
 
@@ -159,6 +180,8 @@ const GetBggDataWidget = ({ name, save, history }) => {
       {details && data && (<pre>Loading data for games {Object.keys(details).length} of {data.items.item.length}</pre>)}
 
       {data && details && <button onClick={saveToStorage}>Save</button>}
+      
+      {data && <div style={{ marginTop: "30px" }}><button onClick={refreshUser}>Refresh data</button></div>}
     </div>
   );
   /*

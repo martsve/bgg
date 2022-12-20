@@ -24,6 +24,7 @@ const ViewUserComponent = ({ match, users, dispatch, history }) => {
     <>
     <h1>{user.name}</h1>
     <GetBggDataWidget history={history} save={(value) => dispatch({ type: "SAVE", user: id, value })} name={user.name} />
+
     <div style={{ marginTop: "30px" }}><button onClick={delUser}>Remove user</button></div>
     </>
   );

@@ -1,6 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export const AllFilters = {
+  "p": {
+    basic: true,
+    title: "Quick filter on # players",
+    options: [
+      { value: '2', action: (list) => list.filter(x => x.minplayers <= 2 && x.maxplayers >= 2 && (x.suggestedPlayers.best.indexOf("2") > -1 || x.suggestedPlayers.recommended.indexOf("2") > -1) && x.suggestedPlayers.avoid.indexOf("2") === -1) },
+      { value: '3', action: (list) => list.filter(x => x.minplayers <= 3 && x.maxplayers >= 3 && (x.suggestedPlayers.best.indexOf("3") > -1 || x.suggestedPlayers.recommended.indexOf("3") > -1) && x.suggestedPlayers.avoid.indexOf("3") === -1) },
+      { value: '4', action: (list) => list.filter(x => x.minplayers <= 4 && x.maxplayers >= 4 && (x.suggestedPlayers.best.indexOf("4") > -1 || x.suggestedPlayers.recommended.indexOf("4") > -1) && x.suggestedPlayers.avoid.indexOf("4") === -1) },
+      { value: '5', action: (list) => list.filter(x => x.minplayers <= 5 && x.maxplayers >= 5 && (x.suggestedPlayers.best.indexOf("5") > -1 || x.suggestedPlayers.recommended.indexOf("5") > -1) && x.suggestedPlayers.avoid.indexOf("5") === -1) },
+      { value: '6', action: (list) => list.filter(x => x.minplayers <= 6 && x.maxplayers >= 6 && (x.suggestedPlayers.best.indexOf("6") > -1 || x.suggestedPlayers.recommended.indexOf("6") > -1) && x.suggestedPlayers.avoid.indexOf("6") === -1) },
+    ]
+  },
+  "brain": {
+    basic: true,
+    title: "Quick filter on brainload",
+    options: [
+      { value: "easy", name: 'Easy', action: (list) => list.filter(x => x.playtime < 90 && x.weight <= 2.5) },
+      { value: "mediun", name: 'Medium', action: (list) => list.filter(x => x.playtime < 180 && x.weight >= 2 && x.weight <= 3.2 && x.group.indexOf("Children's Game") === -1) },
+      { value: "heavy", name: 'Heavy', action: (list) => list.filter(x => x.playtime > 60 && x.weight >= 3.2 && x.group.indexOf("Children's Game") === -1) },   
+     ]
+  },
+  "style": {
+    basic: true,
+    title: "Quick filter on style",
+    options: [
+      { value: "war", name: 'War', action: (list) => list.filter(x => 
+        x.group.indexOf("Party Game") === -1 &&
+        x.group.indexOf("Storytelling") === -1 &&
+        x.group.indexOf("Wargame") > -1
+        ) },
+      { value: "party", name: 'Party', action: (list) => list.filter(x => 
+        x.group.indexOf("Party Game") > -1 ||
+        x.group.join(',').includes("Dexterity")
+        ) },
+      { value: "euro", name: 'Euro', action: (list) => list.filter(x => 
+        x.group.indexOf("Party Game") === -1 &&
+        x.group.indexOf("Real-time") === -1 &&
+        x.group.indexOf("Bluffing") === -1 &&
+        x.group.indexOf("Role Playing") === -1 &&
+        x.group.indexOf("Traitor Game") === -1 &&
+        x.group.indexOf("Push Your Luck") === -1 &&
+        x.group.indexOf("Storytelling") === -1 &&
+        x.group.indexOf("Take That") === -1
+        ) },   
+     ]
+  },
   "length": {
     title: "Game length",
     options: [
@@ -150,13 +195,14 @@ export const AllFilters = {
     ]
   },
   "setup": {
+    default: ["-Legacy Game", "-Campaign Game"],
     title: "Game Setup",
     options: [
       { value: 'Simultaneous', name: 'Sixmultaneous Action Selection', action: (list) => list.filter(x => x.group.indexOf("Simultaneous Action Selection") > -1) },
       { value: 'Deck Construction', name: 'Deck Construction', action: (list) => list.filter(x => x.group.indexOf("Deck Construction") > -1) },
       { value: 'Variable Player Powers', name: 'Variable Player Powers', action: (list) => list.filter(x => x.group.indexOf("Variable Player Powers") > -1) },
       { value: 'Legacy Game', name: 'Legacy Game', action: (list) => list.filter(x => x.group.indexOf("Legacy Game") > -1) },
-      { value: 'Campaign Game', name: 'Campaign/Scenario Game', action: (list) => list.filter(x => x.group.join(',').includes("Campaign")) },
+      { value: 'Campaign Game', name: 'Campaign/Scenario Game', action: (list) => list.filter(x => x.group.join(',').includes("Campaign Game")) },
     ]
   },
   "lang": {
@@ -236,10 +282,19 @@ const rightClick = (event, key, value, filters, change) => {
   return false;
 };
 
+export const getDefaultFilters = () => {
+  //return [];
+  return Object.entries(AllFilters).filter(f => f[1].default).map(f => ({
+    key: f[0],
+    value: f[1].default
+  }));
+}
+
 export const FilterCollectionWidget = ({ filters, change }) => {
+  const [showMore, setShowMore] = useState(false);
   return (
     <div className='filterlists'>
-      {Object.entries(AllFilters).map(f =>
+      {Object.entries(AllFilters).filter(f => showMore || f[1].basic === true).map(f =>
         <div className='card' key={f[0]}>
           <h3>{f[1].title}</h3>
           <ul>
@@ -253,5 +308,6 @@ export const FilterCollectionWidget = ({ filters, change }) => {
           </ul>
         </div>
       )}
+        <div className='card'><button onClick={() => setShowMore(!showMore)}>{showMore ? "<<" : ">>"}</button></div>
     </div>);
 };

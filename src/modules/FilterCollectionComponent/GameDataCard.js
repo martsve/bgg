@@ -2,7 +2,6 @@ import React from 'react';
 
 export const GameDataCard = ({ data }) => {
   // let imgData = data.image && await db.get(db.IMAGES, data.image);
-
   return (<div className='gamecard'>
     {data.image && <div className='thumbnail'><img src={data.image} alt="Thumbnail for game" style={{ maxWidth: "100%", maxHeight: "200px" }} /></div>}
     <div className='heading'>
